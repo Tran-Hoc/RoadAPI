@@ -23,6 +23,7 @@ namespace RoadAPI.Services
             try
             {
                 Account _model = new Account();
+                _model.Id = Guid.NewGuid();
                 _model = _mapper.Map<AccountModel, Account>(model);
                 _model.PathToImage = saveImage(model.Image, (Guid)_model.Id);
 
@@ -68,6 +69,22 @@ namespace RoadAPI.Services
                 return null;
             }
 
+        }
+        private void deleteImage(string fileName)
+        {
+            if (fileName != null)
+            {
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), path);
+
+                // Get the path to the image file
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), path, fileName);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
         }
         public List<AccountViewModel> GetAll()
         {
@@ -129,12 +146,28 @@ namespace RoadAPI.Services
             }
 
             // Update the account item with the data from the model
-     
-            _mapper.Map(model, item);
-            item.PathToImage = saveImage(model.Image, (Guid)item.Id);
-       
+            if(model.Username != null)
+            {
+                item.Username = model.Username;
+            }
+            if(model.Pass != null)
+            {
+                item.Pass = model.Pass;
+            }
+            if(model.Name != null)
+            {
+                item.Name  = model.Name;
+            }
+            //_mapper.Map(model, item);
+            if(model.Image != null)
+            {
+                deleteImage(item.PathToImage);
+                item.PathToImage = saveImage(model.Image, (Guid)item.Id);
+
+            }
+
             // Save the changes to the database
-            _context.Update(item);
+            _context.Accounts.Update(item);
             _context.SaveChanges();
 
             return true;

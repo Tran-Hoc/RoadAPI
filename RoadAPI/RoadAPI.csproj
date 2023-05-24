@@ -7,14 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\Images\account\**" />
-    <Compile Remove="wwwroot\Images\report\**" />
-    <Content Remove="wwwroot\Images\account\**" />
-    <Content Remove="wwwroot\Images\report\**" />
-    <EmbeddedResource Remove="wwwroot\Images\account\**" />
-    <EmbeddedResource Remove="wwwroot\Images\report\**" />
-    <None Remove="wwwroot\Images\account\**" />
-    <None Remove="wwwroot\Images\report\**" />
+    <Compile Remove="wwwroot\images\account\**" />
+    <Compile Remove="wwwroot\images\report\**" />
+    <Content Remove="wwwroot\images\account\**" />
+    <Content Remove="wwwroot\images\report\**" />
+    <EmbeddedResource Remove="wwwroot\images\account\**" />
+    <EmbeddedResource Remove="wwwroot\images\report\**" />
+    <None Remove="wwwroot\images\account\**" />
+    <None Remove="wwwroot\images\report\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,8 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Images\" />
-    <Folder Include="wwwroot\Images\news\" />
+    <Folder Include="wwwroot\images\news\" />
   </ItemGroup>
 
 </Project>

@@ -173,14 +173,18 @@ namespace RoadAPI.Services
         }
         private void deleteImage(string fileName)
         {
-            path = Path.Combine(Directory.GetCurrentDirectory(), path);
-
-            // Get the path to the image file
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), path, fileName);
-
-            if (File.Exists(filePath))
+            if (fileName != null)
             {
-                File.Delete(filePath);
+
+                path = Path.Combine(Directory.GetCurrentDirectory(), path);
+
+                // Get the path to the image file
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), path, fileName);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
             }
         }
 

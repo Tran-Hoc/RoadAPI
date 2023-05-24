@@ -48,8 +48,6 @@ public partial class RoadapiDbContext : DbContext
         modelBuilder.Entity<Report>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
-
-            entity.HasOne(d => d.IdAccountNavigation).WithMany(p => p.Reports).HasConstraintName("FK_report_account");
         });
 
         OnModelCreatingPartial(modelBuilder);

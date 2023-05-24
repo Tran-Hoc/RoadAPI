@@ -94,11 +94,12 @@ namespace RoadAPI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                return Ok(_repository.DeleteById(id));
+
+                return Ok( await _repository.DeleteById(id));
 
             }
             catch

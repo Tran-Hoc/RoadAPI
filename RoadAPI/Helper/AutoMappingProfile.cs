@@ -20,18 +20,9 @@ namespace RoadAPI.Helper
             CreateMap<News, NewsViewModel>();
 
             CreateMap<Report, ReportModel>();
-            CreateMap<ReportModel, Report>().ForMember(
-                dest => dest.IdAccountNavigation,
-                opt => opt.Ignore()
-             );
+            CreateMap<ReportModel, Report>();
             CreateMap<Report, ReportViewModel>();
-
-
-            CreateMap<AccountModel, Account>()
-                   .ForMember(
-                   dest => dest.Id,
-                   opt => opt.MapFrom(src => Guid.NewGuid())
-               )
+            CreateMap<AccountModel, Account>()              
                 .ForMember(dest => dest.PathToImage, opt => opt.Ignore());
             CreateMap<Account, AccountViewModel>();
         }

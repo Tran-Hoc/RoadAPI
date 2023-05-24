@@ -30,8 +30,4 @@ public partial class Report
 
     [Column("id_account")]
     public Guid? IdAccount { get; set; }
-
-    [ForeignKey("IdAccount")]
-    [InverseProperty("Reports")]
-    public virtual Account? IdAccountNavigation { get; set; }
 }
