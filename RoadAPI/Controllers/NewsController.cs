@@ -9,12 +9,12 @@ namespace RoadAPI.Controllers
     public class NewsController : Controller
     {
         private INewsRepository _newsRepository;
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+        //private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
 
-        public NewsController(INewsRepository _newsRepository, Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment)
+        public NewsController(INewsRepository _newsRepository)
         {
             this._newsRepository = _newsRepository;
-            this._hostingEnvironment = _hostingEnvironment;
+            //this._hostingEnvironment = _hostingEnvironment;
         }
 
         [HttpGet]
@@ -58,33 +58,33 @@ namespace RoadAPI.Controllers
 
         }
 
-        [HttpPost("Image")]
-        public async Task<IActionResult> UploadImage(IFormFile file)
-        {
-            try
-            {
-                // Get the server path for the wwwroot directory
-                string wwwrootPath = _hostingEnvironment.WebRootPath;
+        //[HttpPost("Image")]
+        //public async Task<IActionResult> UploadImage(IFormFile file)
+        //{
+        //    try
+        //    {
+        //        // Get the server path for the wwwroot directory
+        //        string wwwrootPath = _hostingEnvironment.WebRootPath;
 
-                // Create the path for the destination file
-                string filename = Path.GetFileName(file.FileName);
-                string filePath = Path.Combine(wwwrootPath, "Images", filename);
+        //        // Create the path for the destination file
+        //        string filename = Path.GetFileName(file.FileName);
+        //        string filePath = Path.Combine(wwwrootPath, "Images", filename);
 
-                // Save the uploaded file to the destination file
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
+        //        // Save the uploaded file to the destination file
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            await file.CopyToAsync(stream);
+        //        }
 
-                // Return the path of the saved image
-                return Ok(new { filePath });
-            }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+        //        // Return the path of the saved image
+        //        return Ok(new { filePath });
+        //    }
+        //    catch
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError);
+        //    }
 
-        }
+        //}
 
         [HttpGet("Image")]
         public async Task<IActionResult> GetImage(string imageName)

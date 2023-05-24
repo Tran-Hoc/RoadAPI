@@ -14,9 +14,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddDbContext<RoadAndOtherApiContext>(option =>
+builder.Services.AddDbContext<RoadapiDbContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("Conn"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("Connection1"));
 });
 
 builder.Services.AddScoped<INewsRepository, NewsRepository>();

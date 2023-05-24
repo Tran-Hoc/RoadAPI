@@ -25,6 +25,13 @@ public partial class Report
     [Column("content")]
     public string? Content { get; set; }
 
-    [InverseProperty("Report")]
-    public virtual ICollection<ImageReport> ImageReports { get; set; } = new List<ImageReport>();
+    [Column("image")]
+    public string? Image { get; set; }
+
+    [Column("id_account")]
+    public Guid? IdAccount { get; set; }
+
+    [ForeignKey("IdAccount")]
+    [InverseProperty("Reports")]
+    public virtual Account? IdAccountNavigation { get; set; }
 }

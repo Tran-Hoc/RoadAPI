@@ -10,13 +10,13 @@ namespace RoadAPI.Services
 {
     public class NewsRepository : INewsRepository
     {
-        private readonly RoadAndOtherApiContext _context;
+        private readonly RoadapiDbContext _context;
         public readonly IMapper _mapper;
         string path = "wwwroot\\images\\news";
         //[Obsolete]
         //private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
 
-        public NewsRepository(RoadAndOtherApiContext context, IMapper mapper)
+        public NewsRepository(RoadapiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -51,7 +51,7 @@ namespace RoadAPI.Services
             {
                 return false;
             }
-
+            deleteImage(newsItem.PathToImage);
             // Delete the news item from the database
             _context.News.Remove(newsItem);
             _context.SaveChanges();

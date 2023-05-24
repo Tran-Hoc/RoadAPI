@@ -12,9 +12,12 @@ namespace RoadAPI.Services
 
     public class ReportRepository : IReportRepository
     {
-        private readonly RoadAndOtherApiContext _context;
+        private readonly RoadapiDbContext _context;
         public readonly IMapper _mapper;
-        public ReportRepository(RoadAndOtherApiContext context, IMapper mapper)
+
+        string path = "wwwroot\\images\\report";
+
+        public ReportRepository(RoadapiDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -26,23 +29,12 @@ namespace RoadAPI.Services
                 Report item = new Report();
 
                 item.Id = Guid.NewGuid();
-                item.TimeSend = model.TimeSend;
+                item.TimeSend = DateTime.Now;
                 item.Location = model.Location;
                 item.Status = model.Status;
                 item.Content = model.Content;
-
-                //item = _mapper.Map<ReportModel, Report>(model);
-
-                foreach (var child in model.Image)
-                {
-                    ImageReport imageReport = new ImageReport()
-                    {
-                        Id = Guid.NewGuid(),
-                        ReportId = item.Id
-                    };
-                    imageReport.PathToImage = saveImage(child, imageReport.Id);
-                    _context.ImageReports.Add(imageReport);
-                }
+                item.Image = saveImage(model.Image, item.Id);
+                item.IdAccount = model.IdAccount;
                 _context.Reports.Add(item);
                 _context.SaveChanges();
                 return true;
@@ -63,16 +55,8 @@ namespace RoadAPI.Services
             {
                 return false;
             }
-            foreach (var child in item.ImageReports)
-            {
-                var childitem = await _context.ImageReports
-                                    .FirstOrDefaultAsync(n => n.Id == id);
-                if (childitem != null)
-                {
-                    deleteImage(childitem.PathToImage);
-                    _context.ImageReports.Remove(childitem);
-                }
-            }
+
+            deleteImage(item.Image);
             // Delete the news item from the database
             _context.Reports.Remove(item);
             await _context.SaveChangesAsync();
@@ -81,90 +65,48 @@ namespace RoadAPI.Services
 
         public List<ReportViewModel> GetAll()
         {
-           if(_context != null)
-            {
-                // _context is not empty
-                var data = _context.Reports
-                        .Select(p => new ReportViewModel
-                        {
-                            Id = p.Id,
-                            TimeSend = p.TimeSend,
-                            Location = p.Location,
-                            Status = p.Status,
-                            Content = p.Content,
-                            ImageReports = p.ImageReports.Select(c => new ImageReport
-                            {
-                                Id = c.Id,
-                                PathToImage = c.PathToImage,
-                                ResultProcessing = c.ResultProcessing
-                            }).ToList()
-                        })
-                        .ToList();
-                return data;
-            }
+            var data = _mapper.Map<List<Report>, List<ReportViewModel>>(_context.Reports.ToList());
 
-            // _context is empty
-            return null;
+            return data;
         }
 
         public ReportViewModel GetById(Guid id)
         {
-            
-            var data = _context.Reports
-                .Where(p => p.Id == id)
-                .Select(p => new ReportViewModel
-                {
-                    Id = p.Id,
-                    TimeSend = p.TimeSend,
-                    Location = p.Location,
-                    Status = p.Status,
-                    Content = p.Content,
-                    ImageReports = p.ImageReports.Select(c => new ImageReport
-                    {
-                        Id = c.Id,
-                        PathToImage = c.PathToImage,
-                        ResultProcessing = c.ResultProcessing
-                    }).ToList()
-                })
-                .FirstOrDefault();
+
+            var data = _context.Reports.FirstOrDefault(n => n.Id == id);
 
             if (data == null)
             {
                 return null;
             }
 
-            return data;
+            return _mapper.Map<Report, ReportViewModel>(data);
         }
 
         public bool Update(ReportUpdateModel model, Guid id)
         {
             try
             {
-                Report item = _context.Reports.FirstOrDefault(p => p.Id == id);
+                var item = _context.Reports.FirstOrDefault(p => p.Id == id);
                 if (item == null)
                 {
                     return false;
                 }
+                if (model.Status != null)
+                {
+                    item.Status = model.Status;
+                }
+                if (model.Content != null)
+                {
+                    item.Content = model.Content;
+                }
 
-                item.Status = model.Status;
-                item.Content = model.Content;
-
-                //_mapper.Map(item, model);
-
-                //item = _mapper.Map<ReportModel, Report>(model);
-
-                //foreach (var child in model.Image)
-                //{
-                //    Id =
-                //    ImageReport imageReport = new ImageReport()
-                //    {
-
-                //        ReportId = item.Id
-                //    };
-                //    imageReport.PathToImage = saveImage(child, imageReport.Id);
-                //    _context.Add(imageReport);
-                //}
-
+                _mapper.Map(model, item);
+                if (model.Image != null)
+                {
+                    deleteImage(item.Image);
+                    item.Image = saveImage(model.Image, item.Id);
+                }
                 _context.Reports.Update(item);
                 _context.SaveChanges();
                 return true;
@@ -195,7 +137,6 @@ namespace RoadAPI.Services
         }
 
 
-        string path = "wwwroot\\images\\report";
         private string saveImage(IFormFile? image, Guid Id)
         {
             if (image != null)

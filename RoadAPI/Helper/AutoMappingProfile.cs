@@ -19,7 +19,13 @@ namespace RoadAPI.Helper
             CreateMap<News, NewsModel>();
             CreateMap<News, NewsViewModel>();
 
-            CreateMap<Report, ReportModel>().ReverseMap();
+            CreateMap<Report, ReportModel>();
+            CreateMap<ReportModel, Report>().ForMember(
+                dest => dest.IdAccountNavigation,
+                opt => opt.Ignore()
+             );
+            CreateMap<Report, ReportViewModel>();
+
 
             CreateMap<AccountModel, Account>()
                    .ForMember(

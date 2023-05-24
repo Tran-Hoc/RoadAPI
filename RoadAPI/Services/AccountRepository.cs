@@ -9,10 +9,10 @@ namespace RoadAPI.Services
 {
     public class AccountRepository : IAccountRepository
     {
-        private readonly RoadAndOtherApiContext _context;
+        private readonly RoadapiDbContext _context;
         public readonly IMapper _mapper;
         string path = "wwwroot\\images\\account";
-        public AccountRepository(IMapper mapper, RoadAndOtherApiContext context)
+        public AccountRepository(IMapper mapper, RoadapiDbContext context)
         {
             _mapper = mapper;
             _context = context;

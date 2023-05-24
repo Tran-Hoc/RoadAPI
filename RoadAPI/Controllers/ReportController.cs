@@ -80,7 +80,7 @@ namespace RoadAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(ReportUpdateModel model, Guid id)
+        public IActionResult Update([FromForm] ReportUpdateModel model, Guid id)
         {
             try
             {
