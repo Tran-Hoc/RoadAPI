@@ -6,7 +6,7 @@ namespace RoadAPI.Interface
     {
         List<NewsViewModel> GetAll();
         NewsViewModel GetById(Guid id);
-        bool Add(NewsModel news);
+        Task<NewsVM> Add(NewsModel news);
         bool DeleteById(Guid id);
         bool Update(NewsModel news, Guid id);
         public FileStream GetImage(string fileName);

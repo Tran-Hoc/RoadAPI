@@ -22,22 +22,24 @@ namespace RoadAPI.Services
             _mapper = mapper;
             //_hostingEnvironment = hostingEnvironment;
         }
-        public bool Add(NewsModel news)
+        public async Task<NewsVM> Add(NewsModel news)
         {
             try
             {
                 News _news = new News();
                 _news = _mapper.Map<NewsModel, News>(news);
-                _news.PathToImage = saveImage(news.Image, _news.Id);
+                _news.PathToImage = _news.Id.ToString();
+                _news.Image = await ConvertImageToBinary(news.Image);
                 _news.PublishedAt = DateTime.Now;
 
                 _context.News.Add(_news);
                 _context.SaveChanges();
-                return true;
+                return new NewsVM { Id = _news.Id };
+
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
@@ -76,7 +78,7 @@ namespace RoadAPI.Services
             return _mapper.Map<News, NewsViewModel>(newsItem);
         }
 
-        public bool Update(NewsModel model, Guid id)
+        public async Task<bool> Update(NewsModel model, Guid id)
         {
             // Get the news item with the specified ID
             var newsItem = _context.News.FirstOrDefault(n => n.Id == id);
@@ -102,9 +104,11 @@ namespace RoadAPI.Services
 
             if (model.Image != null)
             {   // delete image
-                deleteImage(newsItem.PathToImage);
+                //deleteImage(newsItem.PathToImage);
+
                 //update new image
-                newsItem.PathToImage = saveImage(model.Image, newsItem.Id);
+                newsItem.PathToImage = id.ToString();
+                newsItem.Image = await ConvertImageToBinary(model.Image);
 
             }
 
@@ -152,7 +156,7 @@ namespace RoadAPI.Services
 
         }
 
-        public FileStream GetImage(string fileName)
+        public FileStream GetImage(string fileName, FileStream fileStream)
         {
 
             path = Path.Combine(Directory.GetCurrentDirectory(), path);
@@ -166,8 +170,9 @@ namespace RoadAPI.Services
                 return null;
             }
 
-
-            var fileStream = new FileStream(filePath, FileMode.Open);
+            var newsItem = _context.News.FirstOrDefault(n => n.PathToImage == fileName);
+            var fileStream = ConvertBinaryToImage(newsItem.Image);
+            //var fileStream = new FileStream(filePath, FileMode.Open);
             return fileStream;
 
         }
@@ -183,6 +188,32 @@ namespace RoadAPI.Services
                 File.Delete(filePath);
             }
         }
+
+        public async Task<byte[]?> ConvertImageToBinary(IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    byte[] fileBytes = memoryStream.ToArray();
+                    return fileBytes;
+                }
+            }
+            return null;
+        }
+        public async Task<IFormFile?> ConvertBinaryToImage(byte[] byteArray)
+        {
+            if (byteArray != null)
+            {
+                var stream = new MemoryStream(byteArray);
+                IFormFile file = new FormFile(stream, 0, byteArray.Length, "image", path + "fileName.txt");
+                return file;
+            }
+            return null;
+
+        }
+
 
     }
 }

@@ -91,7 +91,7 @@ namespace RoadAPI.Controllers
         {
             try
             {
-                var result = _newsRepository.GetImage(imageName);
+                var result = _newsRepository.GetImage(imageName, fileStream);
                 if ( result == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound);

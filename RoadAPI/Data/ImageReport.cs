@@ -22,7 +22,7 @@ public partial class ImageReport
     [Column("result_processing")]
     public string? ResultProcessing { get; set; }
 
-    [ForeignKey("ReportId")]
-    [InverseProperty("ImageReports")]
-    public virtual Report? Report { get; set; }
+    public byte[]? Image { get; set; }
+
+    public byte[]? ImageAfter { get; set; }
 }

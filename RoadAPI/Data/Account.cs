@@ -25,4 +25,9 @@ public partial class Account
     [Column("name")]
     [StringLength(500)]
     public string? Name { get; set; }
+
+    public byte[]? Image { get; set; }
+
+    [InverseProperty("IdAccountNavigation")]
+    public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
 }

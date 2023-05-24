@@ -15,6 +15,7 @@ namespace RoadAPI.Models
         public IFormFile? Image { get; set; }
         //public DateTime? PublishedAt { get; set; }
         public string? Content { get; set; }
+        public string? Description { get; set; }
     }
 
     public class NewsViewModel
@@ -39,6 +40,12 @@ namespace RoadAPI.Models
         [Column("content")]
         public string? Content { get; set; }
 
+        [Column("description")]
+        public string? Description { get; set; }
+    }
+    public class NewsVM
+    {
+        public Guid Id { get; set; }
     }
 
 }

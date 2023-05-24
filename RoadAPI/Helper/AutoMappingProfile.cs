@@ -13,8 +13,8 @@ namespace RoadAPI.Helper
                    dest => dest.Id,
                    opt => opt.MapFrom(src => Guid.NewGuid())
                )
-                .ForMember(dest => dest.PathToImage, opt => opt.Ignore());
-            ;
+                .ForMember(dest => dest.PathToImage, opt => opt.Ignore())
+                .ForMember(dest => dest.Image, opt => opt.Ignore());
 
             CreateMap<News, NewsModel>();
             CreateMap<News, NewsViewModel>();
