@@ -32,8 +32,8 @@ namespace RoadAPI.Models
         [Column("pass")]
         public string? Pass { get; set; }
 
-        [Column("pathToImage")]
-        public string? PathToImage { get; set; }
+        [Column("NameImage")]
+        public string? NameImage { get; set; }
 
         [Column("name")]
         [StringLength(500)]

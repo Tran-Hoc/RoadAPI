@@ -40,7 +40,7 @@ namespace RoadAPI.Services
                         Id = Guid.NewGuid(),
                         ReportId = item.Id
                     };
-                    imageReport.PathToImage = saveImage(child, imageReport.Id);
+                    imageReport.Image = saveImage(child, imageReport.Id);
                     _context.ImageReports.Add(imageReport);
                 }
                 _context.Reports.Add(item);
@@ -69,7 +69,7 @@ namespace RoadAPI.Services
                                     .FirstOrDefaultAsync(n => n.Id == id);
                 if (childitem != null)
                 {
-                    deleteImage(childitem.PathToImage);
+                    deleteImage(childitem.Image);
                     _context.ImageReports.Remove(childitem);
                 }
             }
@@ -95,7 +95,7 @@ namespace RoadAPI.Services
                             ImageReports = p.ImageReports.Select(c => new ImageReport
                             {
                                 Id = c.Id,
-                                PathToImage = c.PathToImage,
+                                Image = c.Image,
                                 ResultProcessing = c.ResultProcessing
                             }).ToList()
                         })
@@ -122,7 +122,7 @@ namespace RoadAPI.Services
                     ImageReports = p.ImageReports.Select(c => new ImageReport
                     {
                         Id = c.Id,
-                        PathToImage = c.PathToImage,
+                        Image = c.Image,
                         ResultProcessing = c.ResultProcessing
                     }).ToList()
                 })
@@ -161,7 +161,7 @@ namespace RoadAPI.Services
 
                 //        ReportId = item.Id
                 //    };
-                //    imageReport.PathToImage = saveImage(child, imageReport.Id);
+                //    imageReport.NameImage = saveImage(child, imageReport.Id);
                 //    _context.Add(imageReport);
                 //}
 

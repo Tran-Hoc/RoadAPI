@@ -93,7 +93,7 @@ namespace RoadAPI.Services
             //newsItem.Author = model.Author;
             //newsItem.Content = model.Content;
 
-            //newsItem.PathToImage = saveImage(model.Image, newsItem.Id);
+            //newsItem.NameImage = saveImage(model.Image, newsItem.Id);
             //newsItem.PublishedAt = DateTime.Now;
 
             // automapper

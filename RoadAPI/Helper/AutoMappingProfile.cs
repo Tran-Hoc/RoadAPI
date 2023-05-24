@@ -28,6 +28,8 @@ namespace RoadAPI.Helper
                )
                 .ForMember(dest => dest.PathToImage, opt => opt.Ignore());
             CreateMap<Account, AccountViewModel>();
+            //CreateMap<ImageReport, ImageReportModel>();
+
         }
     }
 }

@@ -14,7 +14,10 @@ public partial class ImageReport
     public Guid Id { get; set; }
 
     [Column("pathToImage")]
-    public string? PathToImage { get; set; }
+    public string? Image { get; set; }
+
+    //[Column("pathToImage")]
+    //public string? ImageAfterProcessing { get; set; }
 
     [Column("reportID")]
     public Guid? ReportId { get; set; }

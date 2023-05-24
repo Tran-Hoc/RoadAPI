@@ -18,6 +18,9 @@ namespace RoadAPI.Models
         [Column("content")]
         public string? Content { get; set; }
 
+        [Column("description")]
+        public string? Description { get; set; }
+
         public List<IFormFile> Image { get; set; }
     }
     public class ReportViewModel
@@ -36,6 +39,9 @@ namespace RoadAPI.Models
 
         [Column("content")]
         public string? Content { get; set; }
+
+        [Column("description")]
+        public string? Description { get; set; }
 
         [InverseProperty("Report")]
         public virtual ICollection<ImageReport> ImageReports { get; set; } = new List<ImageReport>();

@@ -28,4 +28,7 @@ public partial class News
 
     [Column("content")]
     public string? Content { get; set; }
+
+    [Column("description")]
+    public string? Description { get; set; }
 }
