@@ -5,6 +5,7 @@ using RoadAPI.Data;
 using RoadAPI.DataContext;
 using RoadAPI.Interface;
 using RoadAPI.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RoadAPI.Services
 {
@@ -156,7 +157,7 @@ namespace RoadAPI.Services
 
         }
 
-        public FileStream GetImage(string fileName, FileStream fileStream)
+        public File GetImage(string fileName)
         {
 
             path = Path.Combine(Directory.GetCurrentDirectory(), path);
@@ -171,8 +172,9 @@ namespace RoadAPI.Services
             }
 
             var newsItem = _context.News.FirstOrDefault(n => n.PathToImage == fileName);
-            var fileStream = ConvertBinaryToImage(newsItem.Image);
+            var fileStream =  ConvertBinaryToImage(newsItem.Image);
             //var fileStream = new FileStream(filePath, FileMode.Open);
+            return File(file.OpenReadStream(), "application/octet-stream", file.FileName);
             return fileStream;
 
         }
@@ -189,6 +191,25 @@ namespace RoadAPI.Services
             }
         }
 
+        //public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        //{
+        //    using (var ms = new MemoryStream())
+        //    {
+        //        imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+        //        return ms.ToArray();
+        //    }
+        //}
+
+        //public Image ByteArrayToImage(byte[] byteArrayIn)
+        //{
+        //    using (var ms = new MemoryStream(byteArrayIn))
+        //    {
+        //        var returnImage = Image.FromStream(ms);
+        //        return returnImage;
+        //    }
+        //}
+
+
         public async Task<byte[]?> ConvertImageToBinary(IFormFile file)
         {
             if (file != null && file.Length > 0)
@@ -202,13 +223,15 @@ namespace RoadAPI.Services
             }
             return null;
         }
-        public async Task<IFormFile?> ConvertBinaryToImage(byte[] byteArray)
+        public File ConvertBinaryToImage(byte[] byteArray)
         {
             if (byteArray != null)
             {
-                var stream = new MemoryStream(byteArray);
-                IFormFile file = new FormFile(stream, 0, byteArray.Length, "image", path + "fileName.txt");
-                return file;
+                return FileStream (byteArray, "image/png");
+
+                //var stream = new MemoryStream(byteArray);
+                //IFormFile file = new FormFile(stream, 0, byteArray.Length, "image", path + "fileName.txt");
+                //return file;
             }
             return null;
 
